@@ -2,7 +2,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import Link from '@material-ui/core/Link';
+import { default as MuiLink } from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,8 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import HelpIcon from '@material-ui/icons/Help';
 import React from 'react';
-import FOLD_TYPES from './FoldTypes';
+import FOLD_TYPES from '../FoldTypes';
 import logo from './logo-small.png';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 export const DRAWER_WIDTH = 260;
 
@@ -43,15 +44,13 @@ const useStyles = makeStyles((theme) => ({
 	linkList: {
 		minHeight: '100vh',
 	},
-	logo: {
-		maxHeight: '50px',
+	logoLink: {
 		margin: 'auto',
 	},
+	logo: {
+		maxHeight: '50px',
+	},
 }));
-
-const FacebookLink = (props) => (
-	<Link href="https://www.facebook.com/groups/406940570021633" {...props} />
-);
 
 function Navigation({ handleDrawerToggle, mobileOpen }) {
 	const classes = useStyles();
@@ -66,12 +65,23 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
 		>
 			<Grid item>
 				<div className={classes.toolbar}>
-					<img src={logo} alt="Logo Ludi Origami" className={classes.logo} />
+					<ReactRouterLink
+						to="/"
+						className={classes.logoLink}
+						onClick={handleDrawerToggle}
+					>
+						<img src={logo} alt="Logo Ludi Origami" className={classes.logo} />
+					</ReactRouterLink>
 				</div>
 			</Grid>
 			<Grid item>
 				<List>
-					<ListItem button>
+					<ListItem
+						button
+						component={ReactRouterLink}
+						to="/presentation"
+						onClick={handleDrawerToggle}
+					>
 						<ListItemIcon>
 							<HelpIcon />
 						</ListItemIcon>
@@ -83,7 +93,13 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
 				<Divider />
 				<List>
 					{FOLD_TYPES.map((foldType) => (
-						<ListItem button key={foldType.name}>
+						<ListItem
+							button
+							key={foldType.id}
+							component={ReactRouterLink}
+							to={foldType.mainPagePath}
+							onClick={handleDrawerToggle}
+						>
 							<ListItemIcon>{foldType.icon}</ListItemIcon>
 							<ListItemText primary={foldType.name} />
 						</ListItem>
@@ -93,7 +109,11 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
 			<Grid item>
 				<Divider />
 				<List>
-					<ListItem button component={FacebookLink}>
+					<ListItem
+						button
+						component={MuiLink}
+						href="https://www.facebook.com/groups/406940570021633"
+					>
 						<ListItemIcon>
 							<FacebookIcon />
 						</ListItemIcon>
