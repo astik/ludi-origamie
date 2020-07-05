@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 function App() {
-  return <div>TODO</div>;
+	return <div>TODO</div>;
 }
 
 export default App;
